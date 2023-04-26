@@ -1,78 +1,73 @@
-#ifndef SHELL_H
-#define SHELL_H
+#ifndef SHELL
+#define SHELL
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include <signal.h>
-#include <dirent.h>
-#include <errno.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-
-/*constants*/
-#define EXTERNAL_COMMAND 1
-#define INTERNAL_COMMAND 2
-#define PATH_COMMAND 3
-#define INVALID_COMMAND -1
-
-#define min(x, y) (((x) < (y)) ? (x) : (y))
+#include <wait.h>
+#include <fcntl.h>
+#include <dirent.h>
+#include <signal.h>
 
 /**
- * struct map - commands a name to a function
- *
- * @command_name: name of the command
- * @func: executes the command
+ * cratuct list - linked list for environment variables
+ * @var: cont environment variable string
+ * @next: points to next node
  */
-
-typedef struct map
+typedef cratuct list
 {
-	char *command_name;
-	void(*func)(char **command);
-} function_map;
+	char *var;
+	cratuct list *next;
 
-extern int status;
-extern char *line;
-extern char *shell_name;
-extern char **commands;
-extern char **environ;
+} ls_env;
 
-/*helpers1*/
-void _strcpy(char *, char *);
-void remove_newline(char *);
-char **tokenizer(char *, char *);
-int _strlen(char *);
-void print(char *, int);
+/*prototypes */
+int pmt(char **env);
+void *_reloc(void *ptr, unsigned int sizeo, unsigned int sizen);
+size_t get_line(char **crat);
+int t_cratlen(char *crat, int pos, char dlm);
+char *no_spinf(char *crat);
+char **_crat_tok(char *crat, char *dlm);
+char **c_crat_tok(char *crat, char *dlm);
+char *_cratcat(char *sto, char *frm);
+char *_cratdup(char *crat);
+char *_cratcpy(char *sto, char *frm);
+int _cratcmp(char *s1, char *s2);
+int _cd(char **crat, ls_env *env, int num);
+int blt_in(char **link, ls_env *env, int num, char **cmnd);
+void pip_cmd(ls_env *env);
+char *_which(char *crat, ls_env *env);
+int ext(char **s, ls_env *env, int num, char **cmnd);
+int _execve(char *argv[], ls_env *env, int num);
+void ptr_free(char **crat);
+void free_ll(ls_env *list);
+int _env(char **crat, ls_env *env);
+char *get_env(char *crat, ls_env *env);
+ls_env *lenv(char **env);
+ls_env *padd_end(ls_env **head, char *crat);
+size_t prt_lst(ls_env *h);
+int del_node(ls_env **head, int pos);
+int unset_env_v(ls_env **env, char **crat);
+int _set_env_v(ls_env **env, char **crat);
+int fn_env(ls_env *env, char *crat);
+void nt_fnd(char *crat, int num, ls_env *env);
+void dir_err(char *crat, int c_n, ls_env *env);
+void nan_no(char *crat, int c_n, ls_env *env);
+char *int_to_string(int num);
+int set_env_v (ls_env **env, char *name, char *dir);
+int c_atoi(char *s);
+char *c_ignore(char *crat);
+int numlen(int n);
+char *int_to_string(int number);
+char *ignore_dlm(char *crat, char dlm);
+int t_size(char *crat, char dlm);
+int c_t_size(char *crat, char dlm);
+char *c_cratdup(char *crat, int cs);
+void ctrl_D(int i, char *cmnd, ls_env *env);
+void ctrl_c(int n)
 
-/*helpers2*/
-int _strcmp(char *, char *);
-char *_strcat(char *, char *);
-int _strspn(char *, char *);
-int _strcspn(char *, char *);
-char *_strchr(char *, char);
-
-/*helpers3*/
-char *_strtok_r(char *, char *, char **);
-int _atoi(char *);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void ctrl_c_handler(int);
-void remove_comment(char *);
-
-/*built_in*/
-void env(char **);
-void quit(char **);
-
-/*main*/
-extern void non_interactive(void);
-extern void initializer(char **current_command, int type_command);
-
-/*utils*/
-int parse_command(char *);
-void execute_command(char **, int);
-char *check_path(char *);
-void (*get_func(char *))(char **);
-char *_getenv(char *);
-
-#endif /*SHELL_H*/
+#endif /*SHELL*/
