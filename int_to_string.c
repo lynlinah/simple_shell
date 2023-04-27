@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * numlen - counts number of 0s in a tens power number
+ * numlen - counts 0s in a decimal number
  * @n: number
- * Return: returns count of digits
+ * Return: returns count 
  */
 int numlen(int n)
 {
@@ -20,7 +20,7 @@ int numlen(int n)
 /**
  * int_to_string - turns an int into a string
  * @number: int
- * Return: returns the int as a string. returns NULL if failed
+ * Return: returns the int as a string else NULL
  */
 
 char *int_to_string(int number)

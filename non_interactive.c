@@ -1,9 +1,8 @@
 #include "shell.h"
 
 /**
- * c_ignore - custom ignores spaces and newlines
- * (e.g. echo "ls\n ls" | ./a.out)
- * @str: envrionmental variables
+ * c_ignore - a custom function that ignores spaces and newlines
+ * @str: enviroment variables
  * Return: new string
  */
 char *c_ignore(char *str)
@@ -14,9 +13,8 @@ char *c_ignore(char *str)
 }
 
 /**
- * non_interactive - handles when user pipes commands into shell via pipeline
- * (e.g. echo "ls/nls -al/n" | ./a.out)
- * @env: envrionmental variables
+ * non_interactive - handles piped commands into shell 
+ * @env: enviroment variables
  */
 void non_interactive(list_t *env)
 {
@@ -32,14 +30,14 @@ void non_interactive(list_t *env)
 	}
 	n_command = command;
 	command = c_ignore(command);
-	n_line = _str_tok(command, "\n"); /* tokenize each command string */
+	n_line = _str_tok(command, "\n"); 
 	if (n_command != NULL)
 		free(n_command);
 	n = 0;
 	while (n_line[n] != NULL)
 	{
 		command_line_no++;
-		token = NULL; /* tokenize each command in array of commands */
+		token = NULL; 
 		token = _str_tok(n_line[n], " ");
 		exit_stat = built_in(token, env, command_line_no, n_line);
 		if (exit_stat)
