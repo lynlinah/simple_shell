@@ -1,222 +1,82 @@
-simpe shell project
-Requirements
-General
-Allowed editors: vi, vim, emacs
-All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=gnu89
-All your files should end with a new line
-A README.md file, at the root of the folder of the project is mandatory
-Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
-Your shell should not have any memory leaks
-No more than 5 functions per file
-All your header files should be include guarded
-Use system calls only when you need to (why?)
-Write a README with the description of your project
-You should have an AUTHORS file at the root of your repository, listing all individuals having contributed content to the repository. Format, see Docker
-GitHub
-*There should be one project repository per group. If you and your partner have a repository with the same name in both your accounts, you risk a 0% score. Add your partner as a collaborator. *
+## Simple_Shell
+> In this project, we coded  A Unix style shell, an interactive which command-line interpreter. We created a shell that would utilize the command line
+> interface (CLI). It allows users to type in a set of commands and task the operating system to run the appropriate function. 
+> 
+ There are a few versions of Unix shells, from the very first (Ken Thompson's) shell that can
+> be activated by typing ```sh``` in the terminal to today's most popular(Bourne Again Shell) a.k.a Bash
+> There are improved versions of the shell that handle memory leaks better and have more functionality. Our shell is a simple version that
+ has basic functionality. You can create/write/read/open/remove folders, print things to the terminal, 
 
-More Info
-Output
-Unless specified otherwise, your program must have the exact same output as sh (/bin/sh) as well as the exact same error output.
-The only difference is when you print an error, the name of the program must be equivalent to your argv[0] (See below)
-Example of error with sh:
 
-$ echo "qwerty" | /bin/sh
-/bin/sh: 1: qwerty: not found
-$ echo "qwerty" | /bin/../bin/sh
-/bin/../bin/sh: 1: qwerty: not found
-$
-Same error with your program hsh:
+### Synopsis
+> This repository holds all the code necessary for our custom simple shell to run.
+> Our shell currently handles the executions of executables found in the
+> Environment variable PATH, with or without their full paths. 
 
-$ echo "qwerty" | ./hsh
-./hsh: 1: qwerty: not found
-$ echo "qwerty" | ./././hsh
-./././hsh: 1: qwerty: not found
-$
+### Builtins
+* ```exit``` e xits shell (```Usage: exit [status]```)
+* ```env``` prints Environment variables (Usage: ```env```)
+* ```setenv``` creates or modifies an Environment variable (Usage: ```setenv name value```)
+* ```unsetenv``` removes an envrionmental variable (Usage: ```unsetenv name value```)
+* ```cd``` changes directories (Usage: ```cd [-][~][path]```)
 
-List of allowed functions and system calls
-access (man 2 access)
-chdir (man 2 chdir)
-close (man 2 close)
-closedir (man 3 closedir)
-execve (man 2 execve)
-exit (man 3 exit)
-_exit (man 2 _exit)
-fflush (man 3 fflush)
-fork (man 2 fork)
-free (man 3 free)
-getcwd (man 3 getcwd)
-getline (man 3 getline)
-getpid (man 2 getpid)
-isatty (man 3 isatty)
-kill (man 2 kill)
-malloc (man 3 malloc)
-open (man 2 open)
-opendir (man 3 opendir)
-perror (man 3 perror)
-read (man 2 read)
-readdir (man 3 readdir)
-signal (man 2 signal)
-stat (__xstat) (man 2 stat)
-lstat (__lxstat) (man 2 lstat)
-fstat (__fxstat) (man 2 fstat)
-strtok (man 3 strtok)
-wait (man 2 wait)
-waitpid (man 2 waitpid)
-wait3 (man 2 wait3)
-wait4 (man 2 wait4)
-write (man 2 write)
-Compilation
-Your shell will be compiled this way:
+### Functions and system calls used
+```read```, ```signal```, ```malloc```, ```free```, ```getcwd```, ```chdir```, ```access```, ```execve```, ```wait```, ```write```,  ```exit```
 
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
-Testing
-Your shell should work like this in interactive mode:
+### Description of what each file shows:
+```
+main.c ----------------------------- holds entrance into program
+shell.h ---------------------------- holds prototypes of functions spread across all files
+```
+Helper files
+```
+prompt.c --------------------------- handles outline of shell's reprompting and executing
+non_interactive.c ------------------ handles output when shell is called outside of shell
+_realloc.c ------------------------- helper function handles reallocation
+_strcat.c -------------------------- concatenates two strings
+_strcmp.c -------------------------- compares if two strings match
+_strcpy.c -------------------------- copies a string
+_strdup.c -------------------------- duplicates a string
+_str_tok.c -------------------------- (custom) tokenizes user's command input and returns array
+c_str_tok.c ------------------------- tokenizes PATH to include ":" as Null, checks current dir
+get_line.c ------------------------- (custom) reads user's typed input into buffer
+_which.c --------------------------- appends command to PATHs, fleshes paths out, returns match
+_cd.c ------------------------------ changes directories
+linked_lists.c --------------------- adds and deletes nodes; prints and frees linked list
+get_env.c -------------------------- finds and returns copy of Environment variable
+env_linked_list.c ------------------ prints and creates linked list of envrionmental variables
+set_unset_env.c -------------------- finds environment variable index node, sets and unsets
+free_double_ptr -------------------- frees double pointers (user's command, arrays)
+_execve.c -------------------------- executes and frees command, then exits program
+__exit.c --------------------------- handles if user types exit or exit(value)
+int_to_string.c -------------------- converts int to string to write error messages
+print_error.c ---------------------- prints special error messages for certain fails
+```
+### Environment
+* Language: C
+* OS: Ubuntu 14.04 LTS
+* Compiler: gcc 
+* Style guidelines: [Betty style]
 
-$ ./hsh
-($) /bin/ls
-hsh main.c shell.c
-($)
-($) exit
-$
-But also in non-interactive mode:
+## How To Install, Compile, and Use
+Install and Compile
+```
+(your_terminal)$ git clone https://github.com/lynlinah/simple_shell.git
+(your_terminal)$ cd simple_shell
+(your_terminal)$ gcc -Wall -Werror -Wextra -pedantic -Wno-format *.c -o simple_shell
 
-$ echo "/bin/ls" | ./hsh
-hsh main.c shell.c test_ls_2
-$
-$ cat test_ls_2
-/bin/ls
-/bin/ls
-$
-$ cat test_ls_2 | ./hsh
-hsh main.c shell.c test_ls_2
-hsh main.c shell.c test_ls_2
-$
-Checks
-The Checker will be released at the end of the project (1-2 days before the deadline). We strongly encourage the entire class to work together to create a suite of checks covering both regular tests and edge cases for each task. See task 8. Test suite.
+```
+**Interactive Mode***
+Activate the shell
+```
+(your_terminal)$ ./simple_shell
+**Non-Interactive Mode**
+```
+echo "ls -l" | ./simple_shell
+```
 
-Tasks
-0. Betty would be proud
-mandatory
-Write a beautiful code that passes the Betty checks
 
-Repo:
-
-GitHub repository: simple_shell
-  
-1. Simple shell 0.1
-mandatory
-Write a UNIX command line interpreter.
-
-Usage: simple_shell
-Your Shell should:
-
-Display a prompt and wait for the user to type a command. A command line always ends with a new line.
-The prompt is displayed again each time a command has been executed.
-The command lines are simple, no semicolons, no pipes, no redirections or any other advanced features.
-The command lines are made only of one word. No arguments will be passed to programs.
-If an executable cannot be found, print an error message and display the prompt again.
-Handle errors.
-You have to handle the “end of file” condition (Ctrl+D)
-You don’t have to:
-
-use the PATH
-implement built-ins
-handle special characters : ", ', `, \, *, &, #
-be able to move the cursor
-handle commands with arguments
-execve will be the core part of your Shell, don’t forget to pass the environ to it…
-
-julien@ubuntu:~/shell$ ./shell 
-#cisfun$ ls
-./shell: No such file or directory
-#cisfun$ /bin/ls
-barbie_j       env-main.c  exec.c  fork.c  pid.c  ppid.c    prompt   prompt.c  shell.c  stat.c         wait
-env-environ.c  exec    fork    mypid   ppid   printenv  promptc  shell     stat test_scripting.sh  wait.c
-#cisfun$ /bin/ls -l
-./shell: No such file or directory
-#cisfun$ ^[[D^[[D^[[D
-./shell: No such file or directory
-#cisfun$ ^[[C^[[C^[[C^[[C
-./shell: No such file or directory
-#cisfun$ exit
-./shell: No such file or directory
-#cisfun$ ^C
-julien@ubuntu:~/shell$ echo "/bin/ls" | ./shell
-barbie_j       env-main.c  exec.c  fork.c  pid.c  ppid.c    prompt   prompt.c  shell.c  stat.c         wait
-env-environ.c  exec    fork    mypid   ppid   printenv  promptc  shell     stat test_scripting.sh  wait.c
-#cisfun$ julien@ubuntu:~/shell$
-Repo:
-
-GitHub repository: simple_shell
-  
-2. Simple shell 0.2
-mandatory
-Simple shell 0.1 +
-
-Handle command lines with arguments
-Repo:
-
-GitHub repository: simple_shell
-  
-3. Simple shell 0.3
-mandatory
-Simple shell 0.2 +
-
-Handle the PATH
-fork must not be called if the command doesn’t exist
-julien@ubuntu:~/shell$ ./shell_0.3
-:) /bin/ls
-barbie_j       env-main.c  exec.c  fork.c  pid.c  ppid.c    prompt   prompt.c  shell_0.3  stat    test_scripting.sh  wait.c
-env-environ.c  exec    fork    mypid   ppid   printenv  promptc  shell     shell.c    stat.c  wait
-:) ls
-barbie_j       env-main.c  exec.c  fork.c  pid.c  ppid.c    prompt   prompt.c  shell_0.3  stat    test_scripting.sh  wait.c
-env-environ.c  exec    fork    mypid   ppid   printenv  promptc  shell     shell.c    stat.c  wait
-:) ls -l /tmp 
-total 20
--rw------- 1 julien julien    0 Dec  5 12:09 config-err-aAMZrR
-drwx------ 3 root   root   4096 Dec  5 12:09 systemd-private-062a0eca7f2a44349733e78cb4abdff4-colord.service-V7DUzr
-drwx------ 3 root   root   4096 Dec  5 12:09 systemd-private-062a0eca7f2a44349733e78cb4abdff4-rtkit-daemon.service-ANGvoV
-drwx------ 3 root   root   4096 Dec  5 12:07 systemd-private-062a0eca7f2a44349733e78cb4abdff4-systemd-timesyncd.service-CdXUtH
--rw-rw-r-- 1 julien julien    0 Dec  5 12:09 unity_support_test.0
-:) ^C
-julien@ubuntu:~/shell$ 
-Repo:
-
-GitHub repository: simple_shell
-  
-4. Simple shell 0.4
-mandatory
-Simple shell 0.3 +
-
-Implement the exit built-in, that exits the shell
-Usage: exit
-You don’t have to handle any argument to the built-in exit
-Repo:
-
-GitHub repository: simple_shell
-  
-5. Simple shell 1.0
-mandatory
-Simple shell 0.4 +
-
-Implement the env built-in, that prints the current environment
-julien@ubuntu:~/shell$ ./simple_shell
-$ env
-USER=julien
-LANGUAGE=en_US
-SESSION=ubuntu
-COMPIZ_CONFIG_PROFILE=ubuntu
-SHLVL=1
-HOME=/home/julien
-C_IS=Fun_:)
-DESKTOP_SESSION=ubuntu
-LOGNAME=julien
-TERM=xterm-256color
-PATH=/home/julien/bin:/home/julien/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-DISPLAY=:0
-$ exit
-julien@ubuntu:~/shell$ 
-Repo:
-
-GitHub repository: simple_shell
+---
+### Authors
+Lewis Wangui (https://twitter.com/LWakahenya)
+Caroline Njeru (https://twitter.com/linah8590)

@@ -2,39 +2,39 @@
 
 /**
  * _which - fleshes out command by appending it to a matching PATH directory
- * @str: first command user typed into shell (e.g. "ls" if user typed "ls -l")
+ * @str: first command user typed into shell 
  * @env: environmental variable
- * Return: a copy of fleshed out command (e.g. "/bin/ls" if originally "ls")
+ * Return: a copy of fleshed out command
  */
 char *_which(char *str, list_t *env)
 {
 	char *pth, *cat = NULL, **toks;
-	int i = 0;
+	int x = 0;
 
-	/* get and tokenize PATH directories, then free original string */
+	
 	pth = get_env("PATH", env);
 	toks = c_str_tok(pth, ":");
 	free(pth);
 
-	/* append "/cmd" to each token to see it's legit */
-	i = 0;
-	while (toks[i] != NULL)
+	
+	x = 0;
+	while (toks[x] != NULL)
 	{
-		if (toks[i][0] == '\0')
+		if (toks[x][0] == '\0')
 			cat = getcwd(cat, 0);
 		else
-			cat = _strdup(toks[i]);
+			cat = _strdup(toks[x]);
 		cat = _strcat(cat, "/");
 		cat = _strcat(cat, str);
 		if (access(cat, F_OK) == 0)
 		{
-			/* free tokens before returning legit fleshed path */
+			
 			free_double_ptr(toks);
 			return (cat);
 		}
-		free(cat); /* free concatenated string if cmd is never found */
-		i++;
+		free(cat); 
+		x++;
 	}
 	free_double_ptr(toks);
-	return (str); /* return string if not found; won't pass execve */
+	return (str); 
 }

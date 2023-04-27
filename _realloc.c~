@@ -2,7 +2,7 @@
 
 /**
  * _realloc - allocate memory and set all values to 0
- * @ptr: pointer to the memory previously allocated 
+ * @ptr: pointer to the memory previously allocated (malloc(old_size))
  * @old_size: size previously allocated
  * @new_size: new size to reallocate
  * Return: pointer to reallocated memory
@@ -11,7 +11,7 @@
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
 	void *p;
-	unsigned int i;
+	unsigned int p;
 
 	if (new_size == 0 && ptr != NULL) 
 	{
@@ -36,8 +36,8 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 		return (NULL);
 
 	
-	for (i = 0; i < old_size && i < new_size; i++)
-		*((char *)p + i) = *((char *)ptr + i);
+	for (p = 0; p < old_size && p < new_size; p++)
+		*((char *)p + p) = *((char *)ptr + p);
 	free(ptr); 
 
 	return (p);

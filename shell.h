@@ -25,7 +25,7 @@ typedef struct list
 
 } list_t;
 
-/* function prototypes */
+/* PROTOTYPES */
 int prompt(char **env);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 size_t get_line(char **str);
@@ -59,4 +59,4 @@ void cant_cd_to(char *str, int c_n, list_t *env);
 void illegal_number(char *str, int c_n, list_t *env);
 char *int_to_string(int num);
 
-#endif
+#endif /*SHELL*/

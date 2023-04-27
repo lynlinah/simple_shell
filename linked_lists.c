@@ -8,8 +8,7 @@
 size_t print_list(list_t *h)
 {
 	list_t *c_list = h;
-	int count = 0;
-	int c = 0;
+	int cnt = 0, x = 0;
 
 	if (h == NULL)
 		return (0);
@@ -22,16 +21,16 @@ size_t print_list(list_t *h)
 		}
 		else
 		{
-			c = 0;
-			while ((c_list->var)[c] != '\0')
-				c++;
-			write(STDOUT_FILENO, c_list->var, c);
+			x = 0;
+			while ((c_list->var)[x] != '\0')
+				x++;
+			write(STDOUT_FILENO, c_list->var, x);
 			write(STDOUT_FILENO, "\n", 1);
 		}
 		c_list = c_list->next;
-		count++;
+		cnt++;
 	}
-	return (count);
+	return (cnt);
 }
 
 /**
@@ -46,7 +45,7 @@ list_t *add_end_node(list_t **head, char *str)
 	list_t *holder;
 
 	if (head == NULL || str == NULL)
-		return (NULL); /* check if address of head is null */
+		return (NULL); 
 	new = malloc(sizeof(list_t));
 	if (new == NULL)
 		return (NULL);
@@ -74,13 +73,13 @@ list_t *add_end_node(list_t **head, char *str)
  * delete_nodeint_at_index - removing node at index
  * @head: input head address
  * @index: input index
- * Return: 1 if success, -1 if fail
+ * Return: 1 if success, else -1 
  */
 int delete_nodeint_at_index(list_t **head, int index)
 {
 	list_t *n_head;
 	list_t *holder;
-	int count = 0;
+	int cnt = 0;
 
 	if (*head == NULL)
 		return (-1);
@@ -92,14 +91,14 @@ int delete_nodeint_at_index(list_t **head, int index)
 		*head = holder;
 		return (1);
 	}
-	count = 1;
+	cnt = 1;
 	n_head = *head;
-	while (count < index)
+	while (cnt < index)
 	{
 		if (n_head == NULL)
 			return (-1);
 		n_head = n_head->next;
-		count++;
+		cnt++;
 	}
 	holder = n_head->next;
 	n_head->next = holder->next;

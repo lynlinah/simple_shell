@@ -2,59 +2,59 @@
 
 /**
  * c_strdup - custom string duplication; excludes beginning bytes
- * @str: string to duplicate (e.g. environmental variable PATH=/bin:/bin/ls)
- * @cs: number of bytes to exclude (e.g. excludes "PATH=")
- * Return: string (e.g. /bin:/bin/ls)
+ * @str: string to duplicate 
+ * @cs: number of bytes to exclude 
+ * Return: string 
  */
 char *c_strdup(char *str, int cs)
 {
 	char *duplicate_str;
-	int i, len = 0;
+	int x, sz = 0;
 
-	if (str == NULL) /* validate str input */
+	if (str == NULL) 
 		return (NULL);
 
-	/* calculate len + null terminator to malloc */
-	while (*(str + len))
-		len++;
-	len++;
+	
+	while (*(str + sz))
+		sz++;
+	sz++;
 
-	/* allocate memory but exclude environmental variable title (PATH) */
-	duplicate_str = malloc(sizeof(char) * (len - cs));
+	
+	duplicate_str = malloc(sizeof(char) * (sz - cs));
 	if (duplicate_str == NULL)
 		return (NULL);
 
-	i = 0;
-	while (i < (len - cs))
+	x = 0;
+	while (x < (sz - cs))
 	{
-		*(duplicate_str + i) = *(str + cs + i);
-		i++;
+		*(duplicate_str + x) = *(str + cs + x);
+		x++;
 	}
 	return (duplicate_str);
 }
 
 /**
- * get_env - finds and returns a copy of the requested environmental variable
+ * get_env - finds and returns a copy of the requested enviroment variable
  * @str: string to store it in
- * @env: entire set of environmental variables
- * Return: copy of requested environmental variable
+ * @env: entire set of enviroment variables
+ * Return: copy of requested enviroment variable
  */
 char *get_env(char *str, list_t *env)
 {
-	int j = 0, cs = 0;
+	int x = 0, cs = 0;
 
 	while (env != NULL)
 	{
-		j = 0;
-		while ((env->var)[j] == str[j]) /* find desired env variable */
-			j++;
-		if (str[j] == '\0' && (env->var)[j] == '=')
+		x = 0;
+		while ((env->var)[x] == str[x]) 
+			x++;
+		if (str[x] == '\0' && (env->var)[x] == '=')
 			break;
 		env = env->next;
 	}
 
-	while (str[cs] != '\0') /* find how many bytes in env variable title */
+	while (str[cs] != '\0') 
 		cs++;
-	cs++; /*counts 1 more for = sign*/
-	return (c_strdup(env->var, cs)); /* make a copy of variable w/o title */
+	cs++; 
+	return (c_strdup(env->var, cs)); 
 }

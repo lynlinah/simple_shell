@@ -7,15 +7,14 @@
  */
 int numlen(int n)
 {
-	int count = 0;
-	int num = n;
+	int cnt = 0, x = n;
 
-	while (num > 9 || num < -9)
+	while (x > 9 || x < -9)
 	{
-		num /= 10;
-		count++;
+		x /= 10;
+		cnt++;
 	}
-	return (count);
+	return (cnt);
 }
 /**
  * int_to_string - turns an int into a string
@@ -25,42 +24,42 @@ int numlen(int n)
 
 char *int_to_string(int number)
 {
-	int digits, tens, i = 0, t = 0, x;
+	int q, r, s = 0, t = 0, x;
 	char *res;
 
-	digits = number;
-	tens = 1;
+	q = number;
+	r = 1;
 
 	if (number < 0)
 		t = 1;
-	res = malloc(sizeof(char) * (numlen(digits) + 2 + t));
+	res = malloc(sizeof(char) * (numlen(q) + 2 + t));
 	if (res == NULL)
 		return (NULL);
 	if (number < 0)
 	{
-		res[i] = '-';
-		i++;
+		res[s] = '-';
+		s++;
 	}
-	for (x = 0; digits > 9 || digits < -9; x++)
+	for (x = 0; q > 9 || q < -9; x++)
 	{
-		digits /= 10;
-		tens *= 10;
+		q /= 10;
+		r *= 10;
 	}
-	for (digits = number; x >= 0; x--)
+	for (q = number; x >= 0; x--)
 	{
-		if (digits < 0)
+		if (q < 0)
 		{
-			res[i] = (digits / tens) * -1 + '0';
-			i++;
+			res[s] = (q / r) * -1 + '0';
+			s++;
 		}
 		else
 		{
-			res[i] = (digits / tens) + '0';
-			i++;
+			res[s] = (q / r) + '0';
+			s++;
 		}
-		digits %= tens;
-		tens /= 10;
+		q %= r;
+		r /= 10;
 	}
-	res[i] = '\0';
+	res[s] = '\0';
 	return (res);
 }

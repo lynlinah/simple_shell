@@ -7,39 +7,39 @@
  */
 size_t get_line(char **str)
 {
-	ssize_t i = 0, size = 0, t = 0, t2 = 0, n = 0;
-	char buff[1024];
+	ssize_t x = 0, sz = 0, er = 0, er1 = 0, y = 0;
+	char buf[1024];
 
-	/* read while there's stdin greater than buffsize; -1 to add a '\0' */
-	while (t2 == 0 && (i = read(STDIN_FILENO, buff, 1024 - 1)))
+	
+	while (er1 == 0 && (x = read(STDIN_FILENO, buf, 1024 - 1)))
 	{
-		if (i == -1) /* check if read errored */
+		if (x == -1) 
 			return (-1);
 
-		buff[i] = '\0'; /* terminate buff with \0 to use with _strcat */
+		buf[x] = '\0'; 
 
-		n = 0; /* last loop if \n is found in the stdin read */
-		while (buff[n] != '\0')
+		y = 0; 
+		while (buf[y] != '\0')
 		{
-			if (buff[n] == '\n')
-				t2 = 1;
-			n++;
+			if (buf[y] == '\n')
+				er1 = 1;
+			y++;
 		}
 
-		/* copy what's read to buff into get_line's buffer */
-		if (t == 0) /* malloc the first time */
+		
+		if (er == 0) 
 		{
-			i++;
-			*str = malloc(sizeof(char) * i);
-			*str = _strcpy(*str, buff);
-			size = i;
-			t = 1;
+			x++;
+			*str = malloc(sizeof(char) * x);
+			*str = _strcpy(*str, buf);
+			sz = x;
+			er = 1;
 		}
-		else /* _realloc via _strcat with each loop */
+		else 
 		{
-			size += i;
-			*str = _strcat(*str, buff);
+			sz += x;
+			*str = _strcat(*str, buf);
 		}
 	}
-	return (size);
+	return (sz);
 }

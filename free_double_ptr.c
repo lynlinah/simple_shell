@@ -6,12 +6,12 @@
  */
 void free_double_ptr(char **str)
 {
-	int i = 0;
+	int x = 0;
 
-	while (str[i] != NULL)
+	while (str[x] != NULL)
 	{
-		free(str[i]);
-		i++;
+		free(str[x]);
+		x++;
 	}
 	free(str);
 }

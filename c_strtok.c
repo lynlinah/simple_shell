@@ -3,68 +3,66 @@
 /**
  * c_t_size - returns number of delim
  * @str: user's command typed into shell
- * @delm: delimeter (e.g. " ");
+ * @delm: delimeter ;
  * Return: number of tokens
  */
 int c_t_size(char *str, char delm)
 {
-	int i = 0, num_delm = 0;
+	int x = 0, dlm = 0;
 
-	while (str[i] != '\0')
+	while (str[x] != '\0')
 	{
-		if (str[i] == delm)
+		if (str[x] == delm)
 		{
-			num_delm++;
+			dlm++;
 		}
-		i++;
+		x++;
 	}
-	return (num_delm);
+	return (dlm);
 }
 
 
 /**
  * c_str_tok - tokenizes a string even the continuous delim with empty string
- * (e.g. path --> ":/bin::/bin/usr" )
  * @str: user's command typed into shell
- * @delm: delimeter (e.g. " ");
- * Return: an array of tokens (e.g. {"\0", "/bin", "\0", "/bin/usr"}
- * (purpose is to have which command look through current directory if ":")
+ * @delm: delimeter 
+ * Return: an array of tokens 
  */
 char **c_str_tok(char *str, char *delm)
 {
-	int buffsize = 0, p = 0, si = 0, i = 0, len = 0, se = 0;
+	int bs = 0, p = 0, q = 0, r = 0, s = 0, t = 0;
 	char **toks = NULL, d_ch;
 
-	/* set variable to be delimeter character (" ") */
+	
 	d_ch = delm[0];
-	/* malloc number of ptrs to store array of tokens, and NULL ptr */
-	buffsize = c_t_size(str, d_ch);
-	toks = malloc(sizeof(char *) * (buffsize + 2));
+	
+	bs = c_t_size(str, d_ch);
+	toks = malloc(sizeof(char *) * (bs + 2));
 	if (toks == NULL)
 		return (NULL);
 
-	/* iterate from string index 0 to string ending index */
-	while (str[se] != '\0')
-		se++;
-	while (si < se)
+	
+	while (str[t] != '\0')
+		t++;
+	while (q < t)
 	{
-		/* malloc lengths for each token ptr in array */
-		len = t_strlen(str, si, d_ch);
-		toks[p] = malloc(sizeof(char) * (len + 1));
+		
+		s = t_strlen(str, q, d_ch);
+		toks[p] = malloc(sizeof(char) * (s + 1));
 		if (toks[p] == NULL)
 			return (NULL);
-		i = 0;
-		while ((str[si] != d_ch) &&
-		       (str[si] != '\0'))
+		r = 0;
+		while ((str[q] != d_ch) &&
+		       (str[q] != '\0'))
 		{
-			toks[p][i] = str[si];
-			i++;
-			si++;
+			toks[p][r] = str[q];
+			r++;
+			q++;
 		}
-		toks[p][i] = '\0'; /* null terminate at end*/
+		toks[p][r] = '\0'; 
 		p++;
-		si++;
+		q++;
 	}
-	toks[p] = NULL; /* set last array ptr to NULL */
+	toks[p] = NULL; 
 	return (toks);
 }

@@ -8,33 +8,30 @@
  */
 char *_strcat(char *dest, char *src)
 {
-	int len = 0;
-	int len2 = 0;
-	int total_len = 0;
-	int j = 0;
+	int sz = 0, sz1 = 0, szt = 0,  x = 0;
 
-	/* find total length of both strings to _realloc */
-	while (dest[len] != '\0')
+	
+	while (dest[sz] != '\0')
 	{
-		len++;
-		total_len++;
+		sz++;
+		szt++;
 	}
-	while (src[len2] != '\0')
+	while (src[sz1] != '\0')
 	{
-		len2++;
-		total_len++;
+		sz1++;
+		szt++;
 	}
 
-	/* _realloc because dest was malloced outside of function */
-	dest = _realloc(dest, len, sizeof(char) * total_len + 1);
+	
+	dest = _realloc(dest, sz, sizeof(char) * szt + 1);
 
-	while (src[j] != '\0')
+	while (src[x] != '\0')
 	{
-		dest[len] = src[j];
-		len++;
-		j++;
+		dest[sz] = src[x];
+		sz++;
+		x++;
 	}
-	dest[len] = '\0';
+	dest[sz] = '\0';
 
 	return (dest);
 }
