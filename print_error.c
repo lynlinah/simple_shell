@@ -1,97 +1,97 @@
 #include "shell.h"
 
 /**
- * not_fn - display error message
- * @cmd: typed command by user
- * @cmd_i: index of typed command
- * @env_v: enviroment variables linked list
+ * not_found - write error ("sh: 1: lss: not found")
+ * @str: user's typed command
+ * @c_n: nth user's typed command
+ * @env: bring in environmental variables linked list to write shell name
  */
-void not_fn(char *cmd, int cmd_i, list_t *env_v)
+void not_found(char *str, int c_n, list_t *env)
 {
-	int num = 0;
+	int count = 0;
 	char *shell, *num;
 
-	shell = get_env("_", env_v); 
-	while (shell[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, shell, num);
+	shell = get_env("_", env); /* get shell name to write */
+	while (shell[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, shell, count);
 	free(shell);
 	write(STDOUT_FILENO, ": ", 2);
-	num = int_to_string(cmd_i); 
-	num = 0;
-	while (num[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, num, num);
+	num = int_to_string(c_n); /* convert cmd line num to string to write */
+	count = 0;
+	while (num[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, num, count);
 	free(num);
 	write(STDOUT_FILENO, ": ", 2);
-	num = 0;
-	while (cmd[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, cmd, num);
+	count = 0;
+	while (str[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, str, count);
 	write(STDOUT_FILENO, ": ", 2);
-	write(STDOUT_FILENO, "Command NOT FOUND!\n", 10);
+	write(STDOUT_FILENO, "not found\n", 10);
 }
 
 /**
- * not_exec - display the error
- * @cmd: user's typed argument after the cmd cd
- * @cmd_i: nth user's typed command
- * @env_v: bring in enviroment variables linked list to write shell name
+ * cant_cd_to - write error ("sh: 2: cd: can't cd to xyz")
+ * @str: user's typed argument after the cmd cd
+ * @c_n: nth user's typed command
+ * @env: bring in environmental variables linked list to write shell name
  */
-void not_exec(char *cmd, int cmd_i, list_t *env_v)
+void cant_cd_to(char *str, int c_n, list_t *env)
 {
-	int num = 0;
+	int count = 0;
 	char *shell, *num;
 
-	shell = get_env("_", env_v);
-	while (shell[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, shell, num);
+	shell = get_env("_", env);
+	while (shell[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, shell, count);
 	free(shell);
 	write(STDOUT_FILENO, ": ", 2);
-	num = int_to_string(cmd_i);
-	num = 0;
-	while (num[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, num, num);
+	num = int_to_string(c_n);
+	count = 0;
+	while (num[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, num, count);
 	free(num);
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, "cd: can't cd to ", 16);
-	num = 0;
-	while (cmd[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, cmd, num);
+	count = 0;
+	while (str[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, str, count);
 	write(STDOUT_FILENO, "\n", 1);
 }
 
 /**
- * nan_no - display the error of illegal no
- * @cmd: typed argument after the cmd exit
- * @cmd_i: index of typed command
- * @env_v: enviroment variables linked list 
+ * illegal_number - write error ("sh: 3: exit: Illegal number abc (or -1)")
+ * @str: user's typed argument after the cmd exit
+ * @c_n: nth user's typed command
+ * @env: bring in environmental variables linked list to write shell name
  */
-void nan_no(char *cmd, int cmd_i, list_t *env_v)
+void illegal_number(char *str, int c_n, list_t *env)
 {
-	int num = 0;
+	int count = 0;
 	char *shell = NULL, *num = NULL;
 
-	shell = get_env("_", env_v);
-	while (shell[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, shell, num);
+	shell = get_env("_", env);
+	while (shell[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, shell, count);
 	free(shell);
 	write(STDOUT_FILENO, ": ", 2);
-	num = int_to_string(cmd_i);
-	num = 0;
-	while (num[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, num, num);
+	num = int_to_string(c_n);
+	count = 0;
+	while (num[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, num, count);
 	free(num);
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, "exit: Illegal number: ", 22);
-	num = 0;
-	while (cmd[num] != '\0')
-		num++;
-	write(STDOUT_FILENO, cmd, num);
+	count = 0;
+	while (str[count] != '\0')
+		count++;
+	write(STDOUT_FILENO, str, count);
 	write(STDOUT_FILENO, "\n", 1);
 }

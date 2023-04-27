@@ -1,64 +1,64 @@
 #include "shell.h"
 
 /**
- * ctrl_c - restarts the pmpt
- * @sig: accepts an integer from signal
+ * ctrl_c - ignore Ctrl-C input and prints prompt again
+ * @n: takes in int from signal
  */
-void ctrl_c(int sig)
+void ctrl_c(int n)
 {
-	(void)sig;
+	(void)n;
 	write(STDOUT_FILENO, "\n$ ", 3);
 }
 
 /**
- * blt_in - handles builtins 
- * @cmd: typed command
- * @env_v: enviroment variable
- * @err: gets in the command typed that bring error to display message
- * @f_cmd: bring in f_cmdcommand to free
- * Returns 1 for used builtin functions,else 0 
+ * built_in - handles builtins (exit, env, cd)
+ * @token: user's typed command
+ * @env: environmental variable
+ * @num: take in nth user command typed to write error message
+ * @command: bring in command to free
+ * Return: 1 if acted on builtin, 0 if not
  */
-int blt_in(char **cmd, list_t *env_v, int err, char **f_cmd)
+int built_in(char **token, list_t *env, int num, char **command)
 {
 	int i = 0;
 
-	/* when user types "exit" */
-	if (_strcmp(cmd[0], "exit") == 0)
+	/* if user types "exit", free cmd tokens, and exit */
+	if (_strcmp(token[0], "exit") == 0)
 	{
-		i = __exit(cmd, env_v, err, f_cmd);
+		i = __exit(token, env, num, command);
 	}
-	/* when user types "env_v" */
-	else if (_strcmp(cmd[0], "env_v") == 0)
+	/* if user types "env", print, free cmd tokens, and reprompt */
+	else if (_strcmp(token[0], "env") == 0)
 	{
-		_env(cmd, env_v);
+		_env(token, env);
 		i = 1;
 	}
-	/* when user types "cd" */
-	else if (_strcmp(cmd[0], "cd") == 0)
+	/* if user types "cd" , it will change directory */
+	else if (_strcmp(token[0], "cd") == 0)
 	{
-		i = _cd(cmd, env_v, err);
+		i = _cd(token, env, num);
 	}
-	/* if user types "set_env_v" */
-	else if (_strcmp(cmd[0], "set_env_v") == 0)
+	/* if user types "setenv", create or modify linked list node */
+	else if (_strcmp(token[0], "setenv") == 0)
 	{
-		set_env_v(&env_v, cmd);
+		_setenv(&env, token);
 		i = 1;
 	}
-	/* if user types "unset_env_v" */
-	else if (_strcmp(cmd[0], "unset_env_v") == 0)
+	/* if user types "setenv", remove linked list node */
+	else if (_strcmp(token[0], "unsetenv") == 0)
 	{
-		unset_env_v(&env_v, cmd);
+		_unsetenv(&env, token);
 		i = 1;
 	}
 	return (i);
 }
 
 /**
- * no_spc_inf - removes spaces in front of a string 
- * @str: string input
+ * ignore_space - return string without spaces in front
+ * @str: string
  * Return: new string
  */
-char *no_spc_inf(char *str)
+char *ignore_space(char *str)
 {
 	while (*str == ' ')
 		str++;
@@ -66,63 +66,63 @@ char *no_spc_inf(char *str)
 }
 
 /**
- * ctrl_D - exits program if input is Ctrl-D
+ * ctrl_D - exits program if Ctrl-D was pressed
  * @i: characters read via get_line
- * @f_cmd: user's typed in command
- * @env_v: enviroment variable linked list
+ * @command: user's typed in command
+ * @env: environmental variable linked list
  */
-void ctrl_D(int i, char *f_cmd, list_t *env_v)
+void ctrl_D(int i, char *command, list_t *env)
 {
-	if (i == 0)
+	if (i == 0) /* handles Ctrl+D */
 	{
-		free(f_cmd); /* exit with a newline */
-		free_linked_list(env_v);
-		if (isatty(STDIN_FILENO))
+		free(command); /* exit with newline if in shell */
+		free_linked_list(env);
+		if (isatty(STDIN_FILENO))/* ctrl+d prints newline */
 			write(STDOUT_FILENO, "\n", 1);
 		exit(0);
 	}
 }
 
 /**
- * pmpt - prompts user and executes user's cmds if applicable
- * @env_v: enviroment variables
+ * prompt - repeatedly prompts user and executes user's cmds if applicable
+ * @en: envrionmental variables
  * Return: 0 on success
  */
-int pmpt(char **env_v)
+int prompt(char **en)
 {
-	list_t *env_v;
-	size_t i = 0, sig = 0;
-	int cmd_no = 0, fn = 0;
-	char *f_cmd, *cmd_i, **cmd;
+	list_t *env;
+	size_t i = 0, n = 0;
+	int command_line_no = 0, exit_stat = 0;
+	char *command, *n_command, **token;
 
-	env_v = env_linked_list(env_v);
+	env = env_linked_list(en);
 	do {
-		cmd_no++;
+		command_line_no++;
 		if (isatty(STDIN_FILENO)) /* reprompt if in interactive shell */
 			write(STDOUT_FILENO, "$ ", 2);
 		else
-			non_interactive(env_v);
-		sig(SIGINT, ctrl_c); /* disable ctrl+c  */
-		f_cmd = NULL; i = 0; 
-		i = get_line(&f_cmd); 
-		ctrl_D(i, f_cmd, env_v); /* exits shell */
-		cmd_i = f_cmd;
-		f_cmd = no_spc_inf(f_cmd);
-		sig = 0;
-		while (f_cmd[sig] != '\n') /* replace get_line's \n with \0 */
-			sig++;
-		f_cmd[sig] = '\0';
-		if (f_cmd[0] == '\0') /* reprompt if user hits enter only */
+			non_interactive(env);
+		signal(SIGINT, ctrl_c); /* makes ctrl+c not work */
+		command = NULL; i = 0; /* reset vars each time loop runs */
+		i = get_line(&command); /* read user's cmd in stdin */
+		ctrl_D(i, command, env); /* exits shell if ctrl-D */
+		n_command = command;
+		command = ignore_space(command);
+		n = 0;
+		while (command[n] != '\n') /* replace get_line's \n with \0 */
+			n++;
+		command[n] = '\0';
+		if (command[0] == '\0') /* reprompt if user hits enter only */
 		{
-			free(cmd_i); continue;
+			free(n_command); continue;
 		}
-		cmd = NULL; cmd = _str_tok(f_cmd, " "); /*cmd user cmd*/
-		if (cmd_i != NULL)
-			free(cmd_i);
-		fn = blt_in(cmd, env_v, cmd_no, NULL);
-		if (fn)
+		token = NULL; token = _str_tok(command, " "); /*token user cmd*/
+		if (n_command != NULL)
+			free(n_command);
+		exit_stat = built_in(token, env, command_line_no, NULL);
+		if (exit_stat)
 			continue;
-		fn = _execve(cmd, env_v, cmd_no);
-	} while (1); 
-	return (fn);
+		exit_stat = _execve(token, env, command_line_no);
+	} while (1); /* keep on repeating till user exits shell */
+	return (exit_stat);
 }

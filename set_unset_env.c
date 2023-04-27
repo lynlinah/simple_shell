@@ -1,55 +1,55 @@
 #include "shell.h"
 
 /**
- * fn_env_v - find enviroment viariable in the given linked list
- * @env_v: linked lis of environment variables
- * @var: variable name
- * Return: the index of node in the @env_v
+ * find_env - find given environmental variable in linked list
+ * @env: environmental variable linked list
+ * @str: variable name
+ * Return: idx of node in linked list
  */
-int fn_env_v(list_t *env_v, char *var)
+int find_env(list_t *env, char *str)
 {
-	int x = 0, index = 0;
+	int j = 0, index = 0;
 
-	while (env_v != NULL)
+	while (env != NULL)
 	{
-		x = 0;
-		while ((env_v->var)[x] == var[x]) /* get env_v variable */
-			x++;
-		if (var[x] == '\0') /* for a total match, break and return index */
+		j = 0;
+		while ((env->var)[j] == str[j]) /* find desired env variable */
+			j++;
+		if (str[j] == '\0') /* if matches entirely, break, return idx */
 			break;
-		env_v = env_v->next;
+		env = env->next;
 		index++;
 	}
-	if (env_v == NULL)
+	if (env == NULL)
 		return (-1);
 	return (index);
 }
 
 /**
- * unset_env_v - function to remove node in enviroment.
- * @env_v: linked list
- * @var: typed command by user
- * Always Return 0 if success
+ * _unsetenv - remove node in environmental linked list
+ * @env: linked list
+ * @str: user's typed in command (e.g. "unsetenv MAIL")
+ * Return: 0 on success
  */
-int unset_env_v(list_t **env_v, char **var)
+int _unsetenv(list_t **env, char **str)
 {
-	int index = 0, x = 0;
+	int index = 0, j = 0;
 
-	if (var[1] == NULL)
+	if (str[1] == NULL)
 	{
-		write(STDOUT_FILENO, "Not enough arguments provided\n", 18);
-		free_double_ptr(var);
+		write(STDOUT_FILENO, "Too few arguments\n", 18);
+		free_double_ptr(str);
 		return (-1);
 	}
-	index = fn_env_v(*env_v, var[1]); /* get index of node */
-	free_double_ptr(var);
-	if (index == -1) /* testing if index has an error */
+	index = find_env(*env, str[1]); /* get idx of node to delete */
+	free_double_ptr(str);
+	if (index == -1) /* check if index errored */
 	{
-		write(STDOUT_FILENO, "NOT found!\n", 12);
+		write(STDOUT_FILENO, "Cannot find\n", 12);
 		return (-1);
 	}
-	x = delete_nodeint_at_index(env_v, index); /* deleting the current node */
-	if (x == -1)
+	j = delete_nodeint_at_index(env, index); /* delete node */
+	if (j == -1)
 	{
 		write(STDOUT_FILENO, "Cannot find\n", 12);
 		return (-1);
@@ -58,43 +58,43 @@ int unset_env_v(list_t **env_v, char **var)
 }
 
 /**
- * set_env_v - creates and modifies the existing enviroment variable
- * @env_v: linked list
- * @var: command typed by the user
- * Always Return 0 when successful, 1 on failure
+ * _setenv - create or modify existing environmental variable in linked list
+ * @env: linked list
+ * @str: user's typed in command (e.g. "setenv USER Superman")
+ * Return: 0 on success, 1 on fail
  */
-int set_env_v(list_t **env_v, char **var)
+int _setenv(list_t **env, char **str)
 {
-	int index = 0, x = 0;
+	int index = 0, j = 0;
 	char *cat;
 	list_t *holder;
 
-	if (var[1] == NULL || var[2] == NULL)
+	if (str[1] == NULL || str[2] == NULL)
 	{
 		write(STDOUT_FILENO, "Too few arguments\n", 18);
-		free_double_ptr(var);
+		free_double_ptr(str);
 		return (-1);
 	}
-	cat = _strdup(var[1]); /* joins the variables to be a new node */
+	cat = _strdup(str[1]); /* concatenate strings to be new node data */
 	cat = _strcat(cat, "=");
-	cat = _strcat(cat, var[2]);
-	index = fn_env_v(*env_v, var[1]); /* get the index */
+	cat = _strcat(cat, str[2]);
+	index = find_env(*env, str[1]); /* find idx to traverse to node */
 	if (index == -1)
 	{
-		add_end_node(env_v, cat); /* if index not found create env_v var */
+		add_end_node(env, cat); /* doesn't exist? create env var */
 	}
 	else
 	{
-		holder = *env_v;
-		while (x < index)
+		holder = *env;
+		while (j < index)
 		{
 			holder = holder->next;
-			x++;
+			j++;
 		}
-		free(holder->var); /* free malloc */
-		holder->var = _strdup(cat); /* initialize to new malloc */
+		free(holder->var); /* else free malloced data */
+		holder->var = _strdup(cat); /* assign to new malloced data */
 	}
 	free(cat);
-	free_double_ptr(var);
+	free_double_ptr(str);
 	return (0);
 }

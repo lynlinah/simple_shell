@@ -2,17 +2,17 @@
 
 /**
  * main - creates a simple shell
- * @arg_c: argument count
- * @arg_v: argument vectors
- * @env_v: environmental variables
- * Return: 0 when successful
+ * @ac: argument count
+ * @av: argument vectors
+ * @env: environmental variables
+ * Return: 0 on success
  */
-int main(int arg_c, char **arg_v, char **env_v)
+int main(int ac, char **av, char **env)
 {
-	(void)arg_c;
-	(void)arg_v;
+	(void)ac;
+	(void)av;
 
-	prompt(env_v);
+	prompt(env);
 
 	return (0);
 }

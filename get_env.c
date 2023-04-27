@@ -1,14 +1,14 @@
 #include "shell.h"
 
 /**
- * str_dup - duplicating a string
- * @str: string to duplicate 
- * @x_bt: number of bytes to exclude 
- * Return: string
+ * c_strdup - custom string duplication; excludes beginning bytes
+ * @str: string to duplicate (e.g. environmental variable PATH=/bin:/bin/ls)
+ * @cs: number of bytes to exclude (e.g. excludes "PATH=")
+ * Return: string (e.g. /bin:/bin/ls)
  */
-char *str_dup(char *str, int x_bt)
+char *c_strdup(char *str, int cs)
 {
-	char *ptr_dup;
+	char *duplicate_str;
 	int i, len = 0;
 
 	if (str == NULL) /* validate str input */
@@ -19,42 +19,42 @@ char *str_dup(char *str, int x_bt)
 		len++;
 	len++;
 
-	/* allocate memory but exclude environmental variable (PATH) */
-	ptr_dup = malloc(sizeof(char) * (len - x_bt));
-	if (ptr_dup == NULL)
+	/* allocate memory but exclude environmental variable title (PATH) */
+	duplicate_str = malloc(sizeof(char) * (len - cs));
+	if (duplicate_str == NULL)
 		return (NULL);
 
 	i = 0;
-	while (i < (len - x_bt))
+	while (i < (len - cs))
 	{
-		*(ptr_dup + i) = *(str + x_bt + i);
+		*(duplicate_str + i) = *(str + cs + i);
 		i++;
 	}
-	return (ptr_dup);
+	return (duplicate_str);
 }
 
 /**
- * g_env_v - finds and returns a copy of the requested environmental variable
+ * get_env - finds and returns a copy of the requested environmental variable
  * @str: string to store it in
- * @env_v: entire set of environmental variables
+ * @env: entire set of environmental variables
  * Return: copy of requested environmental variable
  */
-char *g_env_v(char *str, list_t *env_v)
+char *get_env(char *str, list_t *env)
 {
-	int j = 0, x_bt = 0;
+	int j = 0, cs = 0;
 
-	while (env_v != NULL)
+	while (env != NULL)
 	{
 		j = 0;
-		while ((env_v->var)[j] == str[j]) 
+		while ((env->var)[j] == str[j]) /* find desired env variable */
 			j++;
-		if (str[j] == '\0' && (env_v->var)[j] == '=')
+		if (str[j] == '\0' && (env->var)[j] == '=')
 			break;
-		env_v = env_v->next;
+		env = env->next;
 	}
 
-	while (str[x_bt] != '\0') 
-		x_bt++;
-	x_bt++; 
-	return (str_dup(env_v->var, x_bt)); 
+	while (str[cs] != '\0') /* find how many bytes in env variable title */
+		cs++;
+	cs++; /*counts 1 more for = sign*/
+	return (c_strdup(env->var, cs)); /* make a copy of variable w/o title */
 }

@@ -1,54 +1,56 @@
 #include "shell.h"
 
 /**
- * no_spc - custom function that remove spaces and newlines
- * @env_v: envrionmental variables
+ * c_ignore - custom ignores spaces and newlines
+ * (e.g. echo "ls\n ls" | ./a.out)
+ * @str: envrionmental variables
  * Return: new string
  */
-char *no_spc(char *env_v)
+char *c_ignore(char *str)
 {
-	while (*env_v == ' ' || *env_v == '\n')
-		env_v++;
-	return (env_v);
+	while (*str == ' ' || *str == '\n')
+		str++;
+	return (str);
 }
 
 /**
- * non_inv - handles pipeline comands
- * @env_v: envrionmental variables
+ * non_interactive - handles when user pipes commands into shell via pipeline
+ * (e.g. echo "ls/nls -al/n" | ./a.out)
+ * @env: envrionmental variables
  */
-void non_inv(list_t *env_v)
+void non_interactive(list_t *env)
 {
 	size_t i = 0, n = 0;
-	int cmd_no = 0, fn = 0;
-	char *cmd_t = NULL, *cmd_i = NULL, **ln, **cmd;
+	int command_line_no = 0, exit_stat = 0;
+	char *command = NULL, *n_command = NULL, **n_line, **token;
 
-	i = get_line(&cmd_t);
+	i = get_line(&command);
 	if (i == 0)
 	{
-		free(cmd_t);
+		free(command);
 		exit(0);
 	}
-	cmd_i = cmd_t;
-	cmd_t = no_spc(cmd_t);
-	ln = _str_tok(cmd_t, "\n"); 
-	if (cmd_i != NULL)
-		free(cmd_i);
+	n_command = command;
+	command = c_ignore(command);
+	n_line = _str_tok(command, "\n"); /* tokenize each command string */
+	if (n_command != NULL)
+		free(n_command);
 	n = 0;
-	while (ln[n] != NULL)
+	while (n_line[n] != NULL)
 	{
-		cmd_no++;
-		cmd = NULL; 
-		cmd = _str_tok(ln[n], " ");
-		fn = built_in(cmd, env_v, cmd_no, ln);
-		if (fn)
+		command_line_no++;
+		token = NULL; /* tokenize each command in array of commands */
+		token = _str_tok(n_line[n], " ");
+		exit_stat = built_in(token, env, command_line_no, n_line);
+		if (exit_stat)
 		{
 			n++;
 			continue;
 		}
-		fn = _execve(cmd, env_v, cmd_no);
+		exit_stat = _execve(token, env, command_line_no);
 		n++;
 	}
-	free_double_ptr(ln);
-	free_linked_list(env_v);
-	exit(fn);
+	free_double_ptr(n_line);
+	free_linked_list(env);
+	exit(exit_stat);
 }

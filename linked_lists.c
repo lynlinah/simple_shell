@@ -1,22 +1,21 @@
 #include "shell.h"
 
 /**
- * prt_lst - _print linked list
- * @link: linked list
+ * print_list - _print linked list
+ * @h: linked list
  * Return: size of linked list
  */
-size_t prt_lst(list_t *link)
-
+size_t print_list(list_t *h)
 {
-	list_t *_list = link;
-	int cnt = 0;
+	list_t *c_list = h;
+	int count = 0;
 	int c = 0;
 
-	if (link == NULL)
+	if (h == NULL)
 		return (0);
-	while (_list != NULL)
+	while (c_list != NULL)
 	{
-		if (_list->var == NULL)
+		if (c_list->var == NULL)
 		{
 			write(STDOUT_FILENO, "(nil)", 5);
 			write(STDOUT_FILENO, "\n", 1);
@@ -24,15 +23,15 @@ size_t prt_lst(list_t *link)
 		else
 		{
 			c = 0;
-			while ((_list->var)[c] != '\0')
+			while ((c_list->var)[c] != '\0')
 				c++;
-			write(STDOUT_FILENO, _list->var, c);
+			write(STDOUT_FILENO, c_list->var, c);
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		_list = _list -> next;
-		cnt++;
+		c_list = c_list->next;
+		count++;
 	}
-	return (cnt);
+	return (count);
 }
 
 /**
@@ -81,7 +80,7 @@ int delete_nodeint_at_index(list_t **head, int index)
 {
 	list_t *n_head;
 	list_t *holder;
-	int cnt = 0;
+	int count = 0;
 
 	if (*head == NULL)
 		return (-1);
@@ -93,14 +92,14 @@ int delete_nodeint_at_index(list_t **head, int index)
 		*head = holder;
 		return (1);
 	}
-	cnt = 1;
+	count = 1;
 	n_head = *head;
-	while (cnt < index)
+	while (count < index)
 	{
 		if (n_head == NULL)
 			return (-1);
 		n_head = n_head->next;
-		cnt++;
+		count++;
 	}
 	holder = n_head->next;
 	n_head->next = holder->next;
