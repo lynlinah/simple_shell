@@ -14,60 +14,49 @@
 #include <signal.h>
 
 /**
- * cratuct list - linked list for environment variables
- * @var: cont environment variable string
+ * struct list - linked list for environmental variables
+ * @var: holds environmental variable string
  * @next: points to next node
  */
-typedef cratuct list
+typedef struct list
 {
 	char *var;
-	cratuct list *next;
+	struct list *next;
 
-} ls_env;
+} list_t;
 
-/*prototypes */
-int pmt(char **env);
-void *_reloc(void *ptr, unsigned int sizeo, unsigned int sizen);
-size_t get_line(char **crat);
-int t_cratlen(char *crat, int pos, char dlm);
-char *no_spinf(char *crat);
-char **_crat_tok(char *crat, char *dlm);
-char **c_crat_tok(char *crat, char *dlm);
-char *_cratcat(char *sto, char *frm);
-char *_cratdup(char *crat);
-char *_cratcpy(char *sto, char *frm);
-int _cratcmp(char *s1, char *s2);
-int _cd(char **crat, ls_env *env, int num);
-int blt_in(char **link, ls_env *env, int num, char **cmnd);
-void pip_cmd(ls_env *env);
-char *_which(char *crat, ls_env *env);
-int ext(char **s, ls_env *env, int num, char **cmnd);
-int _execve(char *argv[], ls_env *env, int num);
-void ptr_free(char **crat);
-void free_ll(ls_env *list);
-int _env(char **crat, ls_env *env);
-char *get_env(char *crat, ls_env *env);
-ls_env *lenv(char **env);
-ls_env *padd_end(ls_env **head, char *crat);
-size_t prt_lst(ls_env *h);
-int del_node(ls_env **head, int pos);
-int unset_env_v(ls_env **env, char **crat);
-int _set_env_v(ls_env **env, char **crat);
-int fn_env(ls_env *env, char *crat);
-void nt_fnd(char *crat, int num, ls_env *env);
-void dir_err(char *crat, int c_n, ls_env *env);
-void nan_no(char *crat, int c_n, ls_env *env);
+/* function prototypes */
+int prompt(char **env);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+size_t get_line(char **str);
+int t_strlen(char *str, int pos, char delm);
+char *ignore_space(char *str);
+char **_str_tok(char *str, char *delm);
+char **c_str_tok(char *str, char *delm);
+char *_strcat(char *dest, char *src);
+char *_strdup(char *str);
+char *_strcpy(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
+int _cd(char **str, list_t *env, int num);
+int built_in(char **token, list_t *env, int num, char **command);
+void non_interactive(list_t *env);
+char *_which(char *str, list_t *env);
+int __exit(char **s, list_t *env, int num, char **command);
+int _execve(char *argv[], list_t *env, int num);
+void free_double_ptr(char **str);
+void free_linked_list(list_t *list);
+int _env(char **str, list_t *env);
+char *get_env(char *str, list_t *env);
+list_t *env_linked_list(char **env);
+list_t *add_end_node(list_t **head, char *str);
+size_t print_list(list_t *h);
+int delete_nodeint_at_index(list_t **head, int index);
+int _unsetenv(list_t **env, char **str);
+int _setenv(list_t **env, char **str);
+int find_env(list_t *env, char *str);
+void not_found(char *str, int num, list_t *env);
+void cant_cd_to(char *str, int c_n, list_t *env);
+void illegal_number(char *str, int c_n, list_t *env);
 char *int_to_string(int num);
-int set_env_v (ls_env **env, char *name, char *dir);
-int c_atoi(char *s);
-char *c_ignore(char *crat);
-int numlen(int n);
-char *int_to_string(int number);
-char *ignore_dlm(char *crat, char dlm);
-int t_size(char *crat, char dlm);
-int c_t_size(char *crat, char dlm);
-char *c_cratdup(char *crat, int cs);
-void ctrl_D(int i, char *cmnd, ls_env *env);
-void ctrl_c(int n)
 
-#endif /*SHELL*/
+#endif
