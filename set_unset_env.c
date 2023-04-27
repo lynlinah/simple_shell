@@ -1,100 +1,100 @@
 #include "shell.h"
 
 /**
- * find_env - finds a given enviroment variable in the linked list
- * @env: enviroment variable 
- * @str: variable name
- * Return: idx of node in linked list
+ * fn_env_v - find enviroment viariable in the given linked list
+ * @env_v: linked lis of environment variables
+ * @var: variable name
+ * Return: the index of node in the @env_v
  */
-int find_env(list_t *env, char *str)
+int fn_env_v(list_t *env_v, char *var)
 {
-	int j = 0, index = 0;
+	int x = 0, index = 0;
 
-	while (env != NULL)
+	while (env_v != NULL)
 	{
-		j = 0;
-		while ((env->var)[j] == str[j]) 
-			j++;
-		if (str[j] == '\0') 
+		x = 0;
+		while ((env_v->var)[x] == var[x]) /* get env_v variable */
+			x++;
+		if (var[x] == '\0') /* for a total match, break and return index */
 			break;
-		env = env->next;
+		env_v = env_v->next;
 		index++;
 	}
-	if (env == NULL)
+	if (env_v == NULL)
 		return (-1);
 	return (index);
 }
 
 /**
- * _unsetenv - remove node in enviroment linked list
- * @env: linked list
- * @str: typed  command 
- * Return: 0 on success
+ * unset_env_v - function to remove node in enviroment.
+ * @env_v: linked list
+ * @var: typed command by user
+ * Always Return 0 if success
  */
-int _unsetenv(list_t **env, char **str)
+int unset_env_v(list_t **env_v, char **var)
 {
-	int index = 0, j = 0;
+	int index = 0, x = 0;
 
-	if (str[1] == NULL)
+	if (var[1] == NULL)
 	{
-		write(STDOUT_FILENO, "Less arguments\n", 18);
-		free_double_ptr(str);
+		write(STDOUT_FILENO, "Not enough arguments provided\n", 18);
+		free_double_ptr(var);
 		return (-1);
 	}
-	index = find_env(*env, str[1]); 
-	free_double_ptr(str);
-	if (index == -1) 
+	index = fn_env_v(*env_v, var[1]); /* get index of node */
+	free_double_ptr(var);
+	if (index == -1) /* testing if index has an error */
 	{
-		write(STDOUT_FILENO, "not found\n", 12);
+		write(STDOUT_FILENO, "NOT found!\n", 12);
 		return (-1);
 	}
-	j = delete_nodeint_at_index(env, index); 
-	if (j == -1)
+	x = delete_nodeint_at_index(env_v, index); /* deleting the current node */
+	if (x == -1)
 	{
-		write(STDOUT_FILENO, "not found\n", 12);
+		write(STDOUT_FILENO, "Cannot find\n", 12);
 		return (-1);
 	}
 	return (0);
 }
 
 /**
- * _setenv - create or modify existing enviroment variable in linked list
- * @env: linked list
- * @str: user's typed in command 
- * Return: 0 on success, 1 on fail
+ * set_env_v - creates and modifies the existing enviroment variable
+ * @env_v: linked list
+ * @var: command typed by the user
+ * Always Return 0 when successful, 1 on failure
  */
-int _setenv(list_t **env, char **str)
+int set_env_v(list_t **env_v, char **var)
 {
-	int index = 0, j = 0;
+	int index = 0, x = 0;
 	char *cat;
 	list_t *holder;
 
-	if (str[1] == NULL || str[2] == NULL)
+	if (var[1] == NULL || var[2] == NULL)
 	{
-		write(STDOUT_FILENO, "Less arguments\n", 18);
-		free_double_ptr(str);
+		write(STDOUT_FILENO, "Too few arguments\n", 18);
+		free_double_ptr(var);
 		return (-1);
 	}
-	cat = _strdup(str[1]);
+	cat = _strdup(var[1]); /* joins the variables to be a new node */
 	cat = _strcat(cat, "=");
-	cat = _strcat(cat, str[2]);
-	index = find_env(*env, str[1]); 
+	cat = _strcat(cat, var[2]);
+	index = fn_env_v(*env_v, var[1]); /* get the index */
 	if (index == -1)
 	{
-		add_end_node(env, cat); 
+		add_end_node(env_v, cat); /* if index not found create env_v var */
 	}
 	else
 	{
-		holder = *env;
-		while (j < index)
+		holder = *env_v;
+		while (x < index)
 		{
 			holder = holder->next;
-			j++;
+			x++;
 		}
-		free(holder->var); 
-		holder->var = _strdup(cat); 
+		free(holder->var); /* free malloc */
+		holder->var = _strdup(cat); /* initialize to new malloc */
 	}
 	free(cat);
-	free_double_ptr(str);
+	free_double_ptr(var);
 	return (0);
 }

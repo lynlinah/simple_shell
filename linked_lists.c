@@ -1,21 +1,22 @@
 #include "shell.h"
 
 /**
- * print_list - _print linked list
- * @h: linked list
+ * prt_lst - _print linked list
+ * @link: linked list
  * Return: size of linked list
  */
-size_t print_list(list_t *h)
+size_t prt_lst(list_t *link)
+
 {
-	list_t *c_list = h;
-	int count = 0;
+	list_t *_list = link;
+	int cnt = 0;
 	int c = 0;
 
-	if (h == NULL)
+	if (link == NULL)
 		return (0);
-	while (c_list != NULL)
+	while (_list != NULL)
 	{
-		if (c_list->var == NULL)
+		if (_list->var == NULL)
 		{
 			write(STDOUT_FILENO, "(nil)", 5);
 			write(STDOUT_FILENO, "\n", 1);
@@ -23,15 +24,15 @@ size_t print_list(list_t *h)
 		else
 		{
 			c = 0;
-			while ((c_list->var)[c] != '\0')
+			while ((_list->var)[c] != '\0')
 				c++;
-			write(STDOUT_FILENO, c_list->var, c);
+			write(STDOUT_FILENO, _list->var, c);
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		c_list = c_list->next;
-		count++;
+		_list = _list -> next;
+		cnt++;
 	}
-	return (count);
+	return (cnt);
 }
 
 /**
@@ -46,7 +47,7 @@ list_t *add_end_node(list_t **head, char *str)
 	list_t *holder;
 
 	if (head == NULL || str == NULL)
-		return (NULL);
+		return (NULL); /* check if address of head is null */
 	new = malloc(sizeof(list_t));
 	if (new == NULL)
 		return (NULL);
@@ -74,13 +75,13 @@ list_t *add_end_node(list_t **head, char *str)
  * delete_nodeint_at_index - removing node at index
  * @head: input head address
  * @index: input index
- * Return: 1 if success else -1
+ * Return: 1 if success, -1 if fail
  */
 int delete_nodeint_at_index(list_t **head, int index)
 {
 	list_t *n_head;
 	list_t *holder;
-	int count = 0;
+	int cnt = 0;
 
 	if (*head == NULL)
 		return (-1);
@@ -92,14 +93,14 @@ int delete_nodeint_at_index(list_t **head, int index)
 		*head = holder;
 		return (1);
 	}
-	count = 1;
+	cnt = 1;
 	n_head = *head;
-	while (count < index)
+	while (cnt < index)
 	{
 		if (n_head == NULL)
 			return (-1);
 		n_head = n_head->next;
-		count++;
+		cnt++;
 	}
 	holder = n_head->next;
 	n_head->next = holder->next;

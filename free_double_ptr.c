@@ -1,17 +1,17 @@
 #include "shell.h"
 
 /**
- * free_double_ptr - free malloced arrays
- * @str: array of strings
+ * fr_ptr - free allocated space through malloc
+ * @astr: array of strings
  */
-void free_double_ptr(char **str)
+void fr_ptr(char **astr)
 {
 	int i = 0;
 
-	while (str[i] != NULL)
+	while (astr[i] != NULL)
 	{
-		free(str[i]);
+		free(astr[i]);
 		i++;
 	}
-	free(str);
+	free(astr);
 }

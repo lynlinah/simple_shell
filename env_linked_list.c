@@ -1,33 +1,33 @@
 #include "shell.h"
 
 /**
- * env_linked_list - creates a linked list from enviroment variables
- * @env: enviroment variables
+ * env_ll - creates a linked list from enviroment variables
+ * @env_v: enviroment variables
  * Return: linked list
  */
-list_t *env_linked_list(char **env)
+list_t *env_ll(char **env_v)
 {
-	list_t *head;
+	list_t *strt;
 	int i = 0;
 
-	head = NULL;
-	while (env[i] != NULL)
+	strt = NULL;
+	while (env_v[i] != NULL)
 	{
-		add_end_node(&head, env[i]);
+		add_end_node(&strt, env_v[i]);
 		i++;
 	}
-	return (head);
+	return (strt);
 }
 
 /**
- * _env - prints enviroment variables
- * @str: command into shell 
- * @env: enviroment variables
+ * env_v - prints enviroment variables
+ * @cmd: user's command into shell 
+ * @env_v: enviroment variables
  * Return: 0 on success
  */
-int _env(char **str, list_t *env)
+int env_v(char **cmd, list_t *env_v)
 {
-	free_double_ptr(str); 
-	print_list(env); 
+	free_double_ptr(cmd); /* frees user input */
+	print_list(env_v); /* prints env_v */
 	return (0);
 }

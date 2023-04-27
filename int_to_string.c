@@ -1,65 +1,66 @@
 #include "shell.h"
 
 /**
- * numlen - counts 0s in a decimal number
- * @n: number
- * Return: returns count 
+ * cnt_n0 - counts num of 0s in a decimal no
+ * @n: num
+ * Return: returns cnt of nums
  */
-int numlen(int n)
+int cnt_n0(int n)
 {
-	int count = 0;
+	int cnt = 0;
 	int num = n;
 
 	while (num > 9 || num < -9)
 	{
 		num /= 10;
-		count++;
+		cnt++;
 	}
-	return (count);
+	return (cnt);
 }
+
 /**
- * int_to_string - turns an int into a string
- * @number: int
- * Return: returns the int as a string else NULL
+ * int2str - turns an integer into a string
+ * @num:
+ * Return: returns the string. else NULL if failed
  */
 
-char *int_to_string(int number)
+char *int2str(int num)
 {
-	int digits, tens, i = 0, t = 0, x;
+	int nums, plc, i = 0, t = 0, x;
 	char *res;
 
-	digits = number;
-	tens = 1;
+	nums = num;
+	plc = 1;
 
-	if (number < 0)
+	if (num < 0)
 		t = 1;
-	res = malloc(sizeof(char) * (numlen(digits) + 2 + t));
+	res = malloc(sizeof(char) * (cnt_n0(nums) + 2 + t));
 	if (res == NULL)
 		return (NULL);
-	if (number < 0)
+	if (num < 0)
 	{
 		res[i] = '-';
 		i++;
 	}
-	for (x = 0; digits > 9 || digits < -9; x++)
+	for (x = 0; nums > 9 || nums < -9; x++)
 	{
-		digits /= 10;
-		tens *= 10;
+		nums /= 10;
+		plc *= 10;
 	}
-	for (digits = number; x >= 0; x--)
+	for (nums = num; x >= 0; x--)
 	{
-		if (digits < 0)
+		if (nums < 0)
 		{
-			res[i] = (digits / tens) * -1 + '0';
+			res[i] = (nums / plc) * -1 + '0';
 			i++;
 		}
 		else
 		{
-			res[i] = (digits / tens) + '0';
+			res[i] = (nums / plc) + '0';
 			i++;
 		}
-		digits %= tens;
-		tens /= 10;
+		nums %= plc;
+		plc /= 10;
 	}
 	res[i] = '\0';
 	return (res);

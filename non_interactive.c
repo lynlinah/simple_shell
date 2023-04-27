@@ -1,54 +1,54 @@
 #include "shell.h"
 
 /**
- * c_ignore - a custom function that ignores spaces and newlines
- * @str: enviroment variables
+ * no_spc - custom function that remove spaces and newlines
+ * @env_v: envrionmental variables
  * Return: new string
  */
-char *c_ignore(char *str)
+char *no_spc(char *env_v)
 {
-	while (*str == ' ' || *str == '\n')
-		str++;
-	return (str);
+	while (*env_v == ' ' || *env_v == '\n')
+		env_v++;
+	return (env_v);
 }
 
 /**
- * non_interactive - handles piped commands into shell 
- * @env: enviroment variables
+ * non_inv - handles pipeline comands
+ * @env_v: envrionmental variables
  */
-void non_interactive(list_t *env)
+void non_inv(list_t *env_v)
 {
 	size_t i = 0, n = 0;
-	int command_line_no = 0, exit_stat = 0;
-	char *command = NULL, *n_command = NULL, **n_line, **token;
+	int cmd_no = 0, fn = 0;
+	char *cmd_t = NULL, *cmd_i = NULL, **ln, **cmd;
 
-	i = get_line(&command);
+	i = get_line(&cmd_t);
 	if (i == 0)
 	{
-		free(command);
+		free(cmd_t);
 		exit(0);
 	}
-	n_command = command;
-	command = c_ignore(command);
-	n_line = _str_tok(command, "\n"); 
-	if (n_command != NULL)
-		free(n_command);
+	cmd_i = cmd_t;
+	cmd_t = no_spc(cmd_t);
+	ln = _str_tok(cmd_t, "\n"); 
+	if (cmd_i != NULL)
+		free(cmd_i);
 	n = 0;
-	while (n_line[n] != NULL)
+	while (ln[n] != NULL)
 	{
-		command_line_no++;
-		token = NULL; 
-		token = _str_tok(n_line[n], " ");
-		exit_stat = built_in(token, env, command_line_no, n_line);
-		if (exit_stat)
+		cmd_no++;
+		cmd = NULL; 
+		cmd = _str_tok(ln[n], " ");
+		fn = built_in(cmd, env_v, cmd_no, ln);
+		if (fn)
 		{
 			n++;
 			continue;
 		}
-		exit_stat = _execve(token, env, command_line_no);
+		fn = _execve(cmd, env_v, cmd_no);
 		n++;
 	}
-	free_double_ptr(n_line);
-	free_linked_list(env);
-	exit(exit_stat);
+	free_double_ptr(ln);
+	free_linked_list(env_v);
+	exit(fn);
 }
