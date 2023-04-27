@@ -13,7 +13,7 @@ char *c_ignore(char *str)
 }
 
 /**
- * non_interactive - handles when user pipes commands into shell 
+ * non_interactive - handles when user pipes commands into shell
  * @env: enviroment variables
  */
 void non_interactive(list_t *env)

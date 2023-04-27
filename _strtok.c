@@ -4,7 +4,7 @@
  * t_strlen - returns token's string length for mallocing
  * @str: a token
  * @pos: index position in user's command typed into shell
- * @delm: delimeter 
+ * @delm: delimeter
  * Return: token length
  */
 int t_strlen(char *str, int pos, char delm)
@@ -22,7 +22,7 @@ int t_strlen(char *str, int pos, char delm)
 /**
  * t_size - returns number of delim ignoring continuous delim
  * @str: user's command typed into shell
- * @delm: delimeter 
+ * @delm: delimeter
  * Return: number of delims so that (num token = delims + 1)
  */
 int t_size(char *str, char delm)
@@ -33,12 +33,10 @@ int t_size(char *str, char delm)
 	{
 		if ((str[x] == delm) && (str[x + 1] != delm))
 		{
-			
 			dlm++;
 		}
 		if ((str[x] == delm) && (str[x + 1] == '\0'))
 		{
-			
 			dlm--;
 		}
 		x++;
@@ -49,8 +47,8 @@ int t_size(char *str, char delm)
 /**
  * ignore_delm - returns a version of string without preceeding delims
  * @str: string
- * @delm: delimiter 
- * Return: new string 
+ * @delm: delimiter
+ * Return: new string
  */
 char *ignore_delm(char *str, char delm)
 {
@@ -62,8 +60,8 @@ char *ignore_delm(char *str, char delm)
 /**
  * _str_tok - tokenizes a string and returns an array of tokens
  * @str: user's command typed into shell
- * @delm: delimeter 
- * Return: an array of tokens 
+ * @delm: delimeter
+ * Return: an array of tokens
  */
 char **_str_tok(char *str, char *delm)
 {
@@ -71,17 +69,15 @@ char **_str_tok(char *str, char *delm)
 	char **toks = NULL, d_ch;
 
 	d_ch = delm[0];
-	
 	str = ignore_delm(str, d_ch);
-	
 	bs = t_size(str, d_ch);
 	toks = malloc(sizeof(char *) * (bs + 2));
 	if (toks == NULL)
 		return (NULL);
-	while (str[se] != '\0')	
+	while (str[se] != '\0')
 		se++;
 	while (q < se)
-	{ 
+	{
 		if (str[q] != d_ch)
 		{
 			sz = t_strlen(str, q, d_ch);
@@ -95,15 +91,14 @@ char **_str_tok(char *str, char *delm)
 				r++;
 				q++;
 			}
-			toks[p][r] = '\0'; 
+			toks[p][r] = '\0';
 			t++;
 		}
-		
 		if (q < se && (str[q + 1] != d_ch && str[q + 1] != '\0'))
 			p++;
 		q++;
 	}
 	p++;
-	toks[p] = NULL; 
+	toks[p] = NULL;
 	return (toks);
 }

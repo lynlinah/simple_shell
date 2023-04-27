@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * not_found - write error 
+ * not_found - write error
  * @str: user's typed command
  * @c_n: nth user's typed command
  * @env: bring in enviroment variables linked list to write shell name
@@ -11,13 +11,13 @@ void not_found(char *str, int c_n, list_t *env)
 	int cnt = 0;
 	char *shell, *num;
 
-	shell = get_env("_", env); 
+	shell = get_env("_", env);
 	while (shell[cnt] != '\0')
 		cnt++;
 	write(STDOUT_FILENO, shell, cnt);
 	free(shell);
 	write(STDOUT_FILENO, ": ", 2);
-	num = int_to_string(c_n); 
+	num = int_to_string(c_n);
 	cnt = 0;
 	while (num[cnt] != '\0')
 		cnt++;
@@ -33,7 +33,7 @@ void not_found(char *str, int c_n, list_t *env)
 }
 
 /**
- * cant_cd_to - write error 
+ * cant_cd_to - write error
  * @str: user's typed argument after the cmd cd
  * @c_n: nth user's typed command
  * @env: bring in enviroment variables linked list to write shell name
@@ -65,7 +65,7 @@ void cant_cd_to(char *str, int c_n, list_t *env)
 }
 
 /**
- * illegal_number - write error 
+ * illegal_number - write error
  * @str: user's typed argument after the cmd exit
  * @c_n: nth user's typed command
  * @env: bring in enviroment variables linked list to write shell name

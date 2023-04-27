@@ -21,13 +21,13 @@ list_t *env_linked_list(char **env)
 
 /**
  * _env - prints enviroment variables
- * @str: user's command into shell 
+ * @str: user's command into shell
  * @env: enviroment variables
  * Return: 0 on success
  */
 int _env(char **str, list_t *env)
 {
-	free_double_ptr(str); 
-	print_list(env); 
+	free_double_ptr(str);
+	print_list(env);
 	return (0);
 }

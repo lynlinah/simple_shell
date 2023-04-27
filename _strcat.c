@@ -9,8 +9,6 @@
 char *_strcat(char *dest, char *src)
 {
 	int sz = 0, sz1 = 0, szt = 0,  x = 0;
-
-	
 	while (dest[sz] != '\0')
 	{
 		sz++;
@@ -21,8 +19,6 @@ char *_strcat(char *dest, char *src)
 		sz1++;
 		szt++;
 	}
-
-	
 	dest = _realloc(dest, sz, sizeof(char) * szt + 1);
 
 	while (src[x] != '\0')

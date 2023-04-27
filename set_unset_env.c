@@ -13,9 +13,9 @@ int find_env(list_t *env, char *str)
 	while (env != NULL)
 	{
 		j = 0;
-		while ((env->var)[j] == str[j]) 
+		while ((env->var)[j] == str[j])
 			j++;
-		if (str[j] == '\0') 
+		if (str[j] == '\0')
 			break;
 		env = env->next;
 		idx++;
@@ -28,7 +28,7 @@ int find_env(list_t *env, char *str)
 /**
  * _unsetenv - remove node in environment linked list
  * @env: linked list
- * @str: user's typed in command 
+ * @str: user's typed in command
  * Return: 0 on success
  */
 int _unsetenv(list_t **env, char **str)
@@ -41,14 +41,14 @@ int _unsetenv(list_t **env, char **str)
 		free_double_ptr(str);
 		return (-1);
 	}
-	idx = find_env(*env, str[1]); 
+	idx = find_env(*env, str[1]);
 	free_double_ptr(str);
-	if (idx == -1) 
+	if (idx == -1)
 	{
 		write(STDOUT_FILENO, "Not found\n", 12);
 		return (-1);
 	}
-	y = delete_nodeint_at_index(env, idx); 
+	y = delete_nodeint_at_index(env, idx);
 	if (y == -1)
 	{
 		write(STDOUT_FILENO, "Not found\n", 12);
@@ -60,8 +60,8 @@ int _unsetenv(list_t **env, char **str)
 /**
  * _setenv - create or modify existing environment variable in linked list
  * @env: linked list
- * @str: user's typed in command 
- * Return: 0 on success else 1 
+ * @str: user's typed in command
+ * Return: 0 on success else 1
  */
 int _setenv(list_t **env, char **str)
 {
@@ -75,13 +75,13 @@ int _setenv(list_t **env, char **str)
 		free_double_ptr(str);
 		return (-1);
 	}
-	cat = _strdup(str[1]); 
+	cat = _strdup(str[1]);
 	cat = _strcat(cat, "=");
 	cat = _strcat(cat, str[2]);
-	idx = find_env(*env, str[1]); 
+	idx = find_env(*env, str[1]);
 	if (idx == -1)
 	{
-		add_end_node(env, cat); 
+		add_end_node(env, cat);
 	}
 	else
 	{
@@ -91,8 +91,8 @@ int _setenv(list_t **env, char **str)
 			holder = holder->next;
 			x++;
 		}
-		free(holder->var); 
-		holder->var = _strdup(cat); 
+		free(holder->var);
+		holder->var = _strdup(cat);
 	}
 	free(cat);
 	free_double_ptr(str);

@@ -45,7 +45,7 @@ list_t *add_end_node(list_t **head, char *str)
 	list_t *holder;
 
 	if (head == NULL || str == NULL)
-		return (NULL); 
+		return (NULL);
 	new = malloc(sizeof(list_t));
 	if (new == NULL)
 		return (NULL);
@@ -73,7 +73,7 @@ list_t *add_end_node(list_t **head, char *str)
  * delete_nodeint_at_index - removing node at index
  * @head: input head address
  * @index: input index
- * Return: 1 if success, else -1 
+ * Return: 1 if success, else -1
  */
 int delete_nodeint_at_index(list_t **head, int index)
 {
