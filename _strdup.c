@@ -28,6 +28,5 @@ char *_strdup(char *str)
 		*(duplicate_str + x) = *(str + x);
 		x++;
 	}
-
 	return (duplicate_str);
 }

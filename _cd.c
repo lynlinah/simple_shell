@@ -20,6 +20,7 @@ char *c_strcat(char *dest, char *src)
 		sz1++;
 		szt++;
 	}
+
 	dest = _realloc(dest, sz, sizeof(char) * szt + 1);
 
 	y = 1;
@@ -40,7 +41,7 @@ char *c_strcat(char *dest, char *src)
  * @name: environmental variable name
  * @dir: directory path
  * Return: 0 on success
- */
+ **/
 int c_setenv(list_t **env, char *name, char *dir)
 {
 	int idx = 0, y = 0;

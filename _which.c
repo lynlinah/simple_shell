@@ -14,6 +14,7 @@ char *_which(char *str, list_t *env)
 	pth = get_env("PATH", env);
 	toks = c_str_tok(pth, ":");
 	free(pth);
+
 	x = 0;
 	while (toks[x] != NULL)
 	{

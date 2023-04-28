@@ -25,6 +25,7 @@ int _execve(char **s, list_t *env, int num)
 	int st = 0, p = 0;
 	pid_t pid;
 
+
 	if (access(s[0], F_OK) == 0)
 	{
 		holder = s[0];

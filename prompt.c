@@ -97,7 +97,8 @@ int prompt(char **en)
 		else
 			non_interactive(env);
 		signal(SIGINT, ctrl_c);
-		command = NULL; p = 0;
+		command = NULL;
+		p = 0;
 		p = get_line(&command);
 		ctrl_D(p, command, env);
 		n_command = command;
@@ -108,9 +109,11 @@ int prompt(char **en)
 		command[q] = '\0';
 		if (command[0] == '\0')
 		{
-			free(n_command); continue;
+			free(n_command);
+			continue;
 		}
-		token = NULL; token = _str_tok(command, " ");
+		token = NULL;
+		token = _str_tok(command, " ");
 		if (n_command != NULL)
 			free(n_command);
 		xt = built_in(token, env, cdn, NULL);
